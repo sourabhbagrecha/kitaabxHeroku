@@ -1,0 +1,42 @@
+<%- include ../partials/head.ejs %>
+<style>
+    .general-form{
+        margin: auto;
+        background-color: rgb(248, 251, 253);
+        box-shadow: 10px 10px 5px rgb(231, 234, 236);
+        padding: 20px;
+        border-radius: 2%;
+    }
+</style>
+<%- include ../partials/header.ejs %>
+<main>  
+  <form action="/auth/login" method="POST">
+    <div class="container">
+        <% if(errorMessage.length > 0){ %>
+          <div class="alert alert-danger">
+            <%= errorMessage[0] %>
+          </div>
+        <% } %>
+        <% if( successMessage.length > 0){ %>
+          <div class="alert alert-success">
+            <%= successMessage[0] %>
+          </div>
+        <% } %>
+      <div class="col-lg-6 general-form">
+        <h2 class="">Login </h2>
+        <hr/>
+        <div class="form-group">
+          <input name="email" type="email" class="form-control" placeholder="Enter email">
+        </div>
+        <div class="form-group">
+          <input name="password" type="password" class="form-control" placeholder="Password">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <div class="form-group mt-2 mb-0">
+          Don't have an account? <a href="/auth/signup">Signup</a> today!
+        </div>
+      </div>
+    </div>
+  </form>
+</main>
+<%- include ../partials/footer.ejs %>

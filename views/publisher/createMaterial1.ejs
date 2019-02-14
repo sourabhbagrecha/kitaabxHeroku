@@ -1,0 +1,105 @@
+<%- include ../partials/head.ejs %>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/step.min.css" />
+<style>
+    .general-form{
+      margin: auto;
+      background-color: lightsalmon;
+      box-shadow: 10px 10px 5px rgb(231, 234, 236);
+      padding: 20px;
+      border-radius: 2%;
+      /* min-width: 400px; */
+    }
+  </style>
+<%- include ../partials/header.ejs %>
+  <main>
+    <form action='/publisher/createMaterial/step1' method="POST">
+      <div class="container">
+        <div class="col-lg-9 general-form">
+          <h2 class="">Create your material!</h2>
+          <div class="ui ordered steps">
+            <div class="active step">
+              <i class="truck icon"></i>
+              <div class="content">
+                <div class="title">Step-1</div>
+                <div class="description">About the material</div>
+              </div>
+            </div>
+            <div class="disabled step">
+              <i class="payment icon"></i>
+              <div class="content">
+                <div class="title">Step-2</div>
+                <div class="description"><li>Upload your material</li><li>Create syllabus</li></div>
+              </div>
+            </div>
+          </div>
+          <hr/>
+          <div class="form-row">
+            <div class="col-lg-4 form-group">
+              <h5>Branch:</h5>
+              <select name="branch" id="branch-select" class="form-control">
+                <option value="" disabled selected>Choose</option>
+                <option value="CS">Computer Science</option>
+                <option value="IT">Information Technology</option>
+                <option value="MECH">Mechanical</option>
+                <option value="EXTC">Electronics & TeleComm.</option>
+                <option value="MXTC">Mechatronics</option>
+                <option value="CIVIL">Civil</option>
+              </select>
+            </div>
+            <div class=" col-lg-4 form-group">
+              <h5>Year:</h5>
+              <select name="year" id="year-select" class="form-control">
+                <option value="" disabled selected>Choose</option>
+                <option value="1">I</option>
+                <option value="2">II</option>
+                <option value="3">III</option>
+                <option value="4">IV</option>
+              </select>
+            </div>  
+            <div class="form-group col-md-4">
+              <h5>Type of notes:</h5>
+              <select name="notesType" id="notes-type" class="form-control">
+                <option value="" disabled selected>Choose</option>
+                <option value="Handwritten">Handwritten Notes</option>
+                <option value="Printed">Printed Notes</option>
+                <option value="PPT">PPT</option>
+                <option value="Question Paper">Question Paper</option>
+              </select>
+            </div>
+          </div>
+          <div id="subject-input">
+          </div>
+        </div>
+      </div>
+    </form>
+  </main>
+<script>
+  let branchSelect = $('#branch-select');
+  let yearSelect = $('#year-select');
+  
+  const displaySubjectSelect = (subjects) => {
+  let options;
+  subjects.forEach(subject => {
+    options += `<option value="${subject._id}">${subject.title}</option>`
+  })
+  const inputAndNext = `<div class="form-group">
+    <h5>Subjects:</h5>
+    <select name="subject" id="subject-select" class="form-control">
+      ${options}   
+    </select>
+  </div><button type="submit" class="btn btn-primary">Next</button>`;
+  $('#subject-input').html(inputAndNext);
+  }
+  const fieldchange = () => {
+    if(branchSelect !== undefined && yearSelect !== undefined){
+      fetch(`/api/main/get/subjects?branch=${$(branchSelect).val()}&year=${$(yearSelect).val()}`)
+      .then(response => response.json())
+      .then(result => displaySubjectSelect(result))
+      .catch(err => {
+        console.log(err)});
+    }
+  } 
+  $(yearSelect).on('change',fieldchange);
+  $(branchSelect).on('change',fieldchange);
+</script>    
+<%- include ../partials/footer.ejs %>

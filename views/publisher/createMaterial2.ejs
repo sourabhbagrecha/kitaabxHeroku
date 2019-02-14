@@ -1,0 +1,188 @@
+<%- include ../partials/head.ejs %>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/step.min.css" />
+<style>
+    .general-form{
+      margin: auto;
+      background-color: lightsalmon;
+      box-shadow: 10px 10px 5px rgb(231, 234, 236);
+      padding: 20px;
+      border-radius: 2%;
+      /* min-width: 400px; */
+    }
+    .material-details{
+      display: none;
+    }
+    .loader{
+      visibility: hidden;
+    }
+    .btn{
+      border-radius: 0 !important;
+    }
+  </style>
+<%- include ../partials/header.ejs %>
+  <main>
+    
+    <form action='/publisher/createMaterial' id="step2" method="POST" enctype="multipart/form-data">
+      <div class="container">
+        <div class="col-lg-9 general-form">
+          <h2 class="">Create your material!</h2>
+          <div class="ui ordered steps">
+            <div class="completed step">
+              <div class="content">
+                <div class="title">Step-1</div>
+                <div class="description">About the material</div>
+              </div>
+            </div>
+            <div class="active step">
+              <div class="content">
+                <div class="title">Step-2</div>
+                <div class="description"><li>Upload your material</li><li>Create syllabus</li></div>
+              </div>
+            </div>
+          </div>
+          <hr/>
+          <div class="form-row unit">            
+            <div class="col-md-6 form-group">
+              <h5>Upload you scanned pdf here:</h5>
+              <input type="file" name="file" class="form-control" id="file" accept="application/pdf">
+            </div>
+            <div class="col-md-6 form-group">
+              <div class="loader row" role="status">
+                <div class="col-sm-4">
+                  <svg width="50px"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" class="lds-pacman" style="background: none;"><g ng-attr-style="display:{{config.showBean}}" style="display:block"><circle cx="57.669" cy="50" r="4" ng-attr-fill="{{config.c2}}" fill=""><animate attributeName="cx" calcMode="linear" values="95;35" keyTimes="0;1" dur="1.4" begin="-0.938s" repeatCount="indefinite"></animate><animate attributeName="fill-opacity" calcMode="linear" values="0;1;1" keyTimes="0;0.2;1" dur="1.4" begin="-0.938s" repeatCount="indefinite"></animate></circle><circle cx="78.069" cy="50" r="4" ng-attr-fill="{{config.c2}}" fill=""><animate attributeName="cx" calcMode="linear" values="95;35" keyTimes="0;1" dur="1.4" begin="-0.46199999999999997s" repeatCount="indefinite"></animate><animate attributeName="fill-opacity" calcMode="linear" values="0;1;1" keyTimes="0;0.2;1" dur="1.4" begin="-0.46199999999999997s" repeatCount="indefinite"></animate></circle><circle cx="37.869" cy="50" r="4" ng-attr-fill="{{config.c2}}" fill=""><animate attributeName="cx" calcMode="linear" values="95;35" keyTimes="0;1" dur="1.4" begin="0s" repeatCount="indefinite"></animate><animate attributeName="fill-opacity" calcMode="linear" values="0;1;1" keyTimes="0;0.2;1" dur="1.4" begin="0s" repeatCount="indefinite"></animate></circle></g><g ng-attr-transform="translate({{config.showBeanOffset}} 0)" transform="translate(-15 0)"><path d="M50 50L20 50A30 30 0 0 0 80 50Z" ng-attr-fill="{{config.c1}}" fill="lightcoral" transform="rotate(4.30355 50 50)"><animateTransform attributeName="transform" type="rotate" calcMode="linear" values="0 50 50;45 50 50;0 50 50" keyTimes="0;0.5;1" dur="1.4s" begin="0s" repeatCount="indefinite"></animateTransform></path><path d="M50 50L20 50A30 30 0 0 1 80 50Z" ng-attr-fill="{{config.c1}}" fill="lightcoral" transform="rotate(-4.30355 50 50)"><animateTransform attributeName="transform" type="rotate" calcMode="linear" values="0 50 50;-45 50 50;0 50 50" keyTimes="0;0.5;1" dur="1.4s" begin="0s" repeatCount="indefinite"></animateTransform></path></g></svg>
+                  Uploading...
+                </div>
+                <div class="col-sm-8">
+                    <h6>Please wait, your file is being uploaded.</h6>
+                    <h6>We will notify you, once it is done!</h6>
+                    <h6>Meanwhile create your syllabus below!</h6>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <button type="submit" id="next" class="btn btn-lg btn-primary">Upload</button>
+            </div>
+          </div>
+        </div>
+      </div>
+  </form>
+
+<form class="material-details mt-5" action="/publisher/createMaterial/step2" method="POST">
+  <div class="container">
+    <div class="col-lg-9 general-form">
+      <!-- pdf link returned -->
+      <input type="hidden" name="pdfUrl" id="pdfUrl">
+      <!-- material id retrieved -->
+      <input type="hidden" name="materialId" value="<%= materialId %>"/>
+      <div class="form-group">
+        <h5>Under guidance of:</h5>
+        <input type="text" name="guidedBy" class="form-control" id="" placeholder="Professor's name">
+      </div>
+      <br>
+      <div id="syllabus">
+        <h3><strong>Topics covered(syllabus):</strong></h3>
+        <div id="units">
+          <div class="form-row unit">
+            <div class="col-md-2 form-group">
+              <h5 class="text-center">Unit 1:</h5>
+            </div>
+            <div class="col-md-7 form-group">
+              <input type="text" name="unit[1]" class="form-control" id="unit1" placeholder="Unit title">  
+            </div>
+            <div class="col-md-3 form-group">
+              <input type="number" name="start[1]" class="form-control" id="start1" placeholder="Page no.:">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <input class="btn btn-success" type="button" id="add-unit" value="Add unit!"/>
+        </div>                            
+      </div>
+      <hr>
+      <button type="submit" id="verify-btn" class="btn btn-lg btn-primary">Submit for verification</button>
+    </div>
+  </div>
+  </form>
+</main>
+<script>
+  let unitNo = 1;
+  $('#add-unit').on('click', () => {
+    unitNo++;
+    var newUnit = `
+    <div class="form-row unit new-unit" id="unit${unitNo}">
+      <div class="col-md-2 form-group">
+        <h5 class="text-center">Unit ${unitNo}:</h5>
+      </div>
+      <div class="col-md-6 col-12 form-group">
+        <input type="text" name="unit[${unitNo}]" class="form-control" id="unit${unitNo}" placeholder="Unit title">  
+      </div>
+      <div class="col-md-3 col-10 form-group">
+          <input type="number" name="start[${unitNo}]" class="form-control" id="start${unitNo}" placeholder="Page no.:">
+      </div>
+      <div class="col-md-1 col-2 form-group">
+          <input class="btn btn-danger" type="button" class="remove-unit" id="remove-unit${unitNo}" title="Remove Unit" data-toggle="tooltip" value="X" onclick="removeUnit()"/>
+      </div>
+    </div>`;
+    $(`#remove-unit${unitNo - 1}`).css('display','none');
+    $('#units').append(newUnit);
+  });
+  const removeUnit = (e) => {
+    if(confirm('Are you sure? You want to remove this unit.')){
+      $(`#unit${unitNo}`).remove();
+      $(`#remove-unit${unitNo - 1}`).css('display','block');
+      unitNo--;
+    }
+  }
+</script>
+<script>
+  $("form#step2").submit(function(e) {
+    e.preventDefault();
+    $('.material-details').css('display','block');
+    $('.loader').css('visibility','visible');
+    var formData = new FormData(this);
+    $.ajax({
+      url: window.location.pathname,
+      type: 'POST',
+      data: formData,
+      success: function (data) {
+          alert('Uploaded successfully!');
+      },
+      xhr: function(){
+       var xhr = new window.XMLHttpRequest();
+         // Handle progress
+         //Upload progress
+         console.log(xhr);
+         xhr.upload.onprogress = function(e) {
+      if (e.lengthComputable) {
+        var percentage = (e.loaded / e.total) * 100;
+        console.log(percentage.toString()+"%");
+        console.log(xhr);
+      }
+    };
+    xhr.onerror = function(e) {
+      alert('An error occurred while submitting the form. Maybe your file is too big');
+    };
+   xhr.onload = function() {
+      var file = xhr.responseText;
+       $('div.progress div').css('width','0%');
+       $('div.progress').hide();
+      // showMsg("alert alert-success", "File uploaded successfully!"); 
+      $('#myFile').val(''); 
+      console.log("file uploaded successfully")   
+    };
+        return xhr;
+      },
+      cache: false,
+      contentType: false,
+      processData: false
+    })
+    .then((results) => {
+      console.log(results);
+      $('.loader').css('display','none');
+      $('#pdfUrl').attr('value',results['Location'])
+      console.log(results['Location']);
+    })
+    .catch((err) => console.log(err))
+  });
+</script>
+<%- include ../partials/footer.ejs %>

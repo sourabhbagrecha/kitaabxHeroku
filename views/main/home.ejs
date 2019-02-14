@@ -1,0 +1,106 @@
+<%- include ../partials/head.ejs %>
+<style>
+  .card-logo h1{
+    font-size: 4rem;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .card-logo{
+    height: 135px;
+    background-color: lightcoral;
+    color: white;
+  }
+  .landing{
+    font-family: 'Roboto', sans-serif;
+  }
+</style>
+
+<%- include ../partials/header.ejs %>
+<% function romanize (num) {if (isNaN(num)) return NaN; var digits = String(+num).split(""),key = ["","C","CC","CCC","CD","D","DC","DCC","DCCC","CM","","X","XX","XXX","XL","L","LX","LXX","LXXX","XC","","I","II","III","IV","V","VI","VII","VIII","IX"],roman = "",i = 3;while (i--)roman = (key[+digits.pop() + (i * 10)] || "") + roman;return Array(+digits.join("") + 1).join("M") + roman;} %>
+  <main>
+    <% branches = [{short: 'CS', title:'Computer Science', years: [1,2,3,4], imageUrl:"https://files.askiitians.com/cdn1/images/2014630-184237749-8880-cs.jpg"}, {short: 'IT', title:'Information Technology', years: [1,2,3], imageUrl:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1HC-s3viHNxHCaYlu_n0V6htUY4CC2bVpVacog4YtD_A05l08"}, {short: 'EXTC', title:'Electronics And TeleComm.', years: [1,2,3,4],imageUrl:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0ffnaVMLIHd4yGXhkwCrOQTW-aE81cvn_mfudjgCTez6jkc7vEA'}, {short: 'MECH', title:'Mechanical', years: [1,2,3,4], imageUrl:'https://www.mvjpolytechnic.edu.in/wp-content/uploads/2016/05/mvj-polytechnic-lab04.png'}, {short: 'MXTC', title:'Mechatronics', years: [1,2,3,4], imageUrl:"https://vub.hr/images/uploads/meh_logo.png"},{short: 'CIVIL', title:'Civil', years: [1,2,3,4], imageUrl:'https://image.spreadshirtmedia.com/image-server/v1/mp/compositions/T812A2MPA3140PT17X22Y0D1012883364FS4200/views/1,width=500,height=500,appearanceId=2,backgroundColor=000000,noPt=true,version=1543820067/civil-engineering-shirt-men-s-premium-t-shirt.jpg'} ]%>
+    <div class="container">
+      <% if(errorMessage.length > 0){ %>
+        <div class="alert alert-danger mt-5">
+          <%= errorMessage[0] %>
+        </div>
+        <% } %>
+        <% if( successMessage.length > 0){ %>
+          <div class="alert alert-success mt-5">
+            <%= successMessage[0] %>
+          </div>
+          <% } %>
+        <div class="landing">
+          <div class="row">
+            <div class="col-lg-6" style="font-size: 5rem;">
+              Welcome to KitaabX
+            </div>
+            <div class="col-lg-6" style="font-size: 4.5rem; color: rgb(241, 88, 88);">
+              Wonderful notes at your fingertips
+            </div>
+          </div>
+        </div>
+        <h2 class="bg-light mt-5">Trending:</h2>
+          <div class="row">
+            <% for(i=0; i<4; i++){%>          
+              <div class="card1 col-lg-3 col-sm-6 d-flex justify-content-center mt-5" onclick="javascript:location.href= '/material/5c3d0362bc10485708b95382'">
+                <div class="card shadow" style="width: 18rem;" onmouseover="hovered(this)" onmouseout="removed(this)">
+                  <div class="card-logo text-center"><h1>EM-IV</h1></div>
+                  <div class="card-body">
+                    <h5 class="card-title">Engineering Mathematics-IV</h5>
+                    <h6 class="card-subtitle mb-2 text-muted my-2">Handwritten</h6>
+                    <h5>Branch: CS</h5>
+                    <h5>Year: 2</h5>
+                    <p><strong>Submitted on:</strong> 15/1/2019</p>
+                  </div>
+                </div>
+              </div>
+            <% }%>
+          </div>
+      <div class="container mt-5">
+        <div class="row">
+          <% branches.forEach( branch => {%>
+            <div class="card1 col-lg-4 col-sm-6 d-flex justify-content-center mt-5" data-toggle="modal" data-target="#<%= branch.short %>Modal">
+                <div class="card shadow" style="width: 18rem;" onmouseover="hovered(this)" onmouseout="removed(this)">
+                    <img class="card-img-top " src="<%= branch.imageUrl %>" alt="Card image cap" style="height:180px; opacity: 0.8">
+                    <div class="card-body">
+                        <h5 class="card-title"><%= branch.title %></h5>
+                    </div>
+                </div>
+            </div>
+            <!-- <button class="btn btn-primary" data-toggle="modal" data-target="#<%= branch.short %>Modal"><%= branch.title %></button> -->
+            <div class="modal fade" id="<%= branch.short %>Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalCenterTitle"><%= branch.title %></h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="container" style="background-image: '<% branch.imageUrl %>'">
+                        <div class="row">
+                          <% branch.years.forEach(year => {%>  
+                            <!-- <button class="year-modal-body btn" href="/course?year=<%= year %>&branch=ComputerScience"><%= romanize(year) %> year</button> -->
+                            <input type="button" class="year-modal-body btn" onclick="location.href='/subjects?year=<%= year %>&branch=<%= branch.short %>';" value="<%= romanize(year) %> year" />
+                          <% }) %>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% })%>    
+        </div>
+      </div>
+    </main>
+    <!-- Button trigger modal -->
+    
+  
+    
+<%- include ../partials/footer.ejs %>
