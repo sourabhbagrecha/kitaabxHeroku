@@ -321,7 +321,9 @@
                   <h1>Becoming a Publisher is Easy!<h1>
                 </div>
                 <div class="col-lg-3">
-                  <% if(user.isPublisher){ %><form action="/publisher/dashboard" method="GET"><button class="btn btn-lg signup-publisher">Publisher Dashboard</button></form><% } else { %><form action="/publisher/signup" method="GET"><button class="btn btn-lg signup-publisher">Become a Publisher Today</button></form><%}%>
+                  <% if(isLoggedIn){ %>
+                    <% if(user.isPublisher){ %><form action="/publisher/dashboard" method="GET"><button class="btn btn-lg signup-publisher">Publisher Dashboard</button></form><% } else { %><form action="/publisher/signup" method="GET"><button class="btn btn-lg signup-publisher">Become a Publisher Today</button></form><%}%>
+                  <% } %>
                 </div>
               </div>
             </div>
