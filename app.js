@@ -9,6 +9,7 @@ const User = require('./models/user');
 const Subject = require('./models/subject');
 
 const PORT = process.env.PORT || 3001;
+// const MONGODB_URI = 'mongodb://localhost/kitaabx-main';
 const MONGODB_URI = 'mongodb://command:command123@ds145881.mlab.com:45881/kitaabxfirst';
 
 const app = express();
