@@ -176,6 +176,37 @@
   .signup-publisher:hover{
     opacity: 1;
   }
+  .para__up{
+    position: relative;
+  }
+  .about__para{
+    position: absolute;
+    font-size: 1.3rem;
+  }
+  .about__para--first{
+    top: 25%;
+  }
+  .about__para--second{
+    top: 10%;
+  }
+  .about__image{
+    width: 100%;
+  }
+  .about__section{
+    border-radius: 1%;
+    padding: 10px;
+    font-weight: 600;
+    color: rgb(41, 18, 18);
+  }
+  .about__section--first{
+    background-image: linear-gradient(#6ed3cf, rgb(121, 179, 233));
+  }
+  .about__section--second{
+    background-image: linear-gradient(rgb(121, 179, 233), #6ed3cf);
+  }
+  .jumbotron{
+    background-color: #e1e8f0;
+  }
   @media (max-width: 768px){
     .intro__contents__heading{
       font-size: 4rem;
@@ -249,31 +280,60 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-2"></div>
-                <ul class="list-group col-10" id="results-display"></ul>
+                <div class="col-2 col-sm-1"></div>
+                <div class="col-10 col-sm-11 p-2">
+                  <ul class="list-group" id="results-display"></ul>
+                </div>
               </div>
             </div>
           </div>
         <div class="container">
-            <div class="jumbotron mt-5 p-3 mb-0">
-              <h1>Featured Handwritten Notes:</h1>
+          <div class="about" id="about">
+            <div class="row jumbotron mt-5 p-3 mb-0">
+              <h1>What is KitaabX ?</h1>
             </div>
-            <div class="row">
-              <% featuredM.forEach(material => {%>
-                <div class="card--featured col-lg-3 col-sm-6 d-flex justify-content-center mt-4" onclick="javascript:location.href= '/material/<%= material._id %>'">
-                  <div class="card shadow" style="width: 18rem;" onmouseover="hovered(this)" onmouseout="removed(this)">
-                    <div class="card-logo text-center"><h1><%= material.subject.shortForm %></h1></div>
-                    <div class="card-body">
-                      <h5 class="card-title"><%= material.subject.title %></h5>
-                      <h6 class="card-subtitle mb-2 text-muted my-2"><%= material.notesType %></h6>
-                      <h6><strong>Branch:</strong><%= branchify[material.branch] %></h6>
-                      <h6><strong>Year:</strong><%= yearify[material.year] %></h6>
-                      <p><strong>Published on: </strong><%= MONTH[material.createdAt.getMonth()] %>,<%= material.createdAt.getYear() + 1900 %></p>
+            <div class="row about__section about__section--first mt-5">
+              <div class="col-lg-7 para__up">
+                <p class="about__para about__para--first">On an average 45% of the lecture time gets consumed in dictating notes, i.e., a student typically only writes what the faculty dictates, while this time can be effectively utilized in explaining concepts and solving doubts resulting in a completely interactive and knowledgeful lecture.</p>
+              </div>
+              <div class="col-lg-5 p-2">
+                <img class="about__image" src="https://media.istockphoto.com/photos/back-view-of-large-group-of-school-kids-having-a-class-in-elementary-picture-id995992332?k=6&m=995992332&s=612x612&w=0&h=8jCZbbyTNTRkjdr_snQt52IuhfwoXoBwbk4CwDZDaHk=" alt="about-image"/>
+              </div>
+            </div>
+            <div class="row about__section about__section--second mt-4">    
+              <div class="col-lg-5 p-2">
+                <img class="about__image" src="https://c2.staticflickr.com/8/7408/8806389259_a506c61053_b.jpg" alt="about-image"/>
+              </div>
+              <div class="col-lg-7 para__up">
+                <div class="about__para about__para--second">
+                    <p>But still, lecture notes work as a trump card while revising the subject or the night before the exam. A  solution to this issue is "Kitaabx".</p>
+                    <p>Kitaabx provides handwritten notes always at your fingertips.</p>
+                    <p>Just choose your subject and browse through all materials (notes) that are being uploaded by your peers and teachers, and start learning in a brand new way.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="featured-materials">
+            <div class="jumbotron mt-5 p-3 mb-0">
+                <h1>Featured Handwritten Notes:</h1>
+              </div>
+              <div class="row">
+                <% featuredM.forEach(material => {%>
+                  <div class="card--featured col-lg-3 col-sm-6 d-flex justify-content-center mt-4" onclick="javascript:location.href= '/material/<%= material._id %>'">
+                    <div class="card shadow" style="width: 18rem;" onmouseover="hovered(this)" onmouseout="removed(this)">
+                      <div class="card-logo text-center"><h1><%= material.subject.shortForm %></h1></div>
+                      <div class="card-body">
+                        <h5 class="card-title"><%= material.subject.title %></h5>
+                        <h6 class="card-subtitle mb-2 text-muted my-2"><%= material.notesType %></h6>
+                        <h6><strong>Branch:</strong><%= branchify[material.branch] %></h6>
+                        <h6><strong>Year:</strong><%= yearify[material.year] %></h6>
+                        <p><strong>Published on: </strong><%= MONTH[material.createdAt.getMonth()] %>,<%= material.createdAt.getYear() + 1900 %></p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              <% }) %>
-            </div>
+                <% }) %>
+              </div>
+          </div>
         <div id="branch">
           <div class="jumbotron mt-5 p-3 mb-0">
             <h1>Featured Branches:</h1>
@@ -317,13 +377,11 @@
           <div class="publisher steps-container bg-light pb-5">
             <div class="jumbotron mt-5 p-3 mb-0">
               <div class="row">
-                <div class="col-lg-9">
+                <div class="col-lg-8">
                   <h1>Becoming a Publisher is Easy!<h1>
                 </div>
-                <div class="col-lg-3">
-                  <% if(isLoggedIn){ %>
-                    <% if(user.isPublisher){ %><form action="/publisher/dashboard" method="GET"><button class="btn btn-lg signup-publisher">Publisher Dashboard</button></form><% } else { %><form action="/publisher/signup" method="GET"><button class="btn btn-lg signup-publisher">Become a Publisher Today</button></form><%}%>
-                  <% } %>
+                <div class="col-lg-4">
+                  <% if(isLoggedIn){ %><% if(user.isPublisher){ %><form action="/publisher/dashboard" method="GET"><button class="btn btn-lg signup-publisher">Publisher Dashboard</button></form><% } %><% } else { %><form action="/publisher/signup" method="POST"><button class="btn btn-lg signup-publisher">Become a Publisher Today</button></form><%}%>
                 </div>
               </div>
             </div>

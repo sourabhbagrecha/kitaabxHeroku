@@ -39,27 +39,14 @@
       <hr/>
     </div>
     <div class="container">
-        <div class="row bg-light course-description shadow" onmouseover="hovered(this)" onmouseout="removed(this)" onclick="javascript:location.href= '/material/%c567612eb65d098f9a' ">
-          <div class="col-md-3 p-2" style="margin: 0px;">
-            <div class="course-image">
-              <img src="https://udemy-images.udemy.com/course/240x135/1638522_fbdf.jpg" alt="Course Image" style="margin: 0px;padding: 0px;width: 100%">
-            </div>
-          </div>
-          <div class="col-md-4 p-2">
-            <ul class="course-details">
-                <li><h4>Become an HTML Expert</h4></li>
-                <li><h6 style="line-height: 20px;">Learn everything you'll need to know in HTML. Including XHTML, SVG, HTML5 and a little bit of CSS</h6></li>
-                <li><h6>-jesse Caine <span style="float:right;padding-right:20%;font-size:1.2em;">700/-</span></h6></li>
-              </ul>
-          </div>
-          <div class="col-md-5 p-2">
-            <ul>
-              <li><h6>Understand the difference between Block and Inline Elements</h6></li>
-              <li><h6>How to Embed Files into an HTML Document</h6></li>
-              <li><h6>How to Embed Files into an HTML Document</h6></li>
-              <li><h6>How to Embed Files into an HTML Document. It is good.</h6></li>
-            </ul>
-          </div>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+        <div class="bg-light text-center" style="height: 50vh;">
+          <h1 class="mt-5"><i class="fas fa-heart-broken" style="font-size: 9rem"></i></h1>
+          <h3 class="mt-5">There is nothing here</h3>
+          <h2 class="">Keep exploring</h2>
+          <form action="/" method="GET">
+            <button class="btn btn-lg btn-success mt-3" style="background-color: #9068be;">Explore</button>
+          </form>
         </div>
         <% subject.materials.forEach(material =>{ %>
         <div class="row bg-light course-description containernew1 shadow" onmouseover="hovered(this)" onmouseout="removed(this)" onclick="javascript:location.href= '/material/<%= material._id %>'">

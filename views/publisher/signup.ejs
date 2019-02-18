@@ -1,10 +1,72 @@
 <%- include ../partials/head.ejs %>
+<script src='https://www.google.com/recaptcha/api.js'></script>
+<style>
+  .general-form{
+    margin: auto;
+    background-color: rgb(248, 251, 253);
+    box-shadow: 10px 10px 5px rgb(231, 234, 236);
+    padding: 20px;
+    border-radius: 2%;
+  }
+</style>
+<script>
+function enableBtn (){
+  $('#submit-signup').show();
+}
+</script>
+<%- include ../partials/header.ejs %>
+<main>
+  <%- include ../partials/elements/flash %>
+  <form action="/auth/signup" method="POST">
+    <div class="container">
+      <div class="col-lg-6 general-form">
+        <h2>Signup </h2>
+        <hr/>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <input type="text" name="fname" class="form-control" aria-describedby="emailHelp" placeholder="First Name" required>
+          </div>
+          <div class="form-group col-md-6">
+              <input type="text" name="lname" class="form-control" aria-describedby="emailHelp" placeholder="Last Name" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <input type="email" name="email" class="form-control" aria-describedby="emailHelp" placeholder="Email" required>
+        </div> 
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <input type="password" name="password" class="form-control" id="password" placeholder="Password" required>
+          </div>
+          <div class="form-group col-md-6">
+            <input type="password" name="confirm-password" class="form-control" id="confirm" placeholder="Confirm Password" oninput="confirmPassword()" required>
+            <p id="message" class="mb-0"></p>
+          </div>
+          <div class="g-recaptcha" data-sitekey="6LdwT5IUAAAAAN8kGBwc6X0C_V-JtUZ7dF_eWJeK" data-callback="enableBtn"></div>
+        </div>
+        <button type="submit" class="btn btn-primary" id="submit-signup">Submit</button>
+        <div class="form-group mt-2 mb-0">
+          Already have an account? <a href="/auth/login">Login</a> now!
+        </div>
+      </div>
+    </div>
+  </form>
+</main>
+<script>
+let submit = $('#submit-signup');
+$('#submit-signup').hide();
+$(submit).attr('disabled','disabled');
 
+const confirmPassword = () => {
+  let password = $('#password').val();
+  let confirmP = $('#confirm').val();
+  if(password === confirmP){
+    $('#message').html('<span style="color: #66b7f1;">Matched!</span>');
+    $(submit).removeAttr('disabled');     
+  }else{
+    $('#message').html('<span style="color: red;">Confirm password should be same as password</span>');
+    $(submit).attr('disabled','disabled');     
+  }
 
-<%- include ../partials/header.ejs %>      
-  <main>
-    <form action="/publisher/signup" method="POST" class=" text-center">
-      <button class="btn btn-primary mt-5" type="submit">Become a publisher @ kitaabx today!</button>
-    </form>
-  </main>
+}
+</script>
 <%- include ../partials/footer.ejs %>
