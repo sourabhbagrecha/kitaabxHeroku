@@ -1,4 +1,5 @@
 <%- include ../partials/head.ejs %>
+<script src="/js/m-different-branch.js"></script>
 <% const MONTH = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]; %>
 <style>
   *::-webkit-scrollbar-track{
@@ -86,8 +87,8 @@
       }
     </style>
     <div class="container">
-      <div class="jumbotron p-3" style="background-color: rgb(250, 216, 216);">
-        <h1 class="material-title"><%= material.subject.title %></h1>
+      <div class="jumbotron p-3" style="background-image: linear-gradient(#9068be, #e1e8f0);">
+        <h1 class="material-title text-light"><%= material.subject.title %></h1>
         <div class="row">
           <div class="col-md-4">
             <h5 class="material-publisher"><strong>By:</strong> <%= material.publisher.name.first + ' ' + material.publisher.name.last %></h5>
@@ -112,14 +113,14 @@
             </div>
         </div>
         <div class="mt-4 col-lg-9 material-display">
-          <div data-spy="scroll" data-target="#list-example" data-offset="50" class="images-container scrollspy-example" id="lazy-container" style="max-height: 100vh; overflow-y: scroll;background-color: lightcoral;">
+          <div data-spy="scroll" data-target="#list-example" data-offset="50" class="images-container scrollspy-example" id="lazy-container" style="max-height: 100vh; overflow-y: scroll;background-color: #e1e8f0;">
             <% for(let p = 1; p <= material.totalPages; p++){ %>
               <% material.contents.forEach(c => { %>
                 <% if(c.start === p){ %>
-                  <h1  id="list-item-<%= c.chapterNo %>" class="page-no text-center text-light">Unit-<%= c.chapterNo %>: <%= c.chapterName %></h1><hr style="background-color: white;"/>  
+                  <h1  id="list-item-<%= c.chapterNo %>" class="page-no text-center">Unit-<%= c.chapterNo %>: <%= c.chapterName %></h1><hr/>  
                 <% } %>
               <% }) %>
-              <p class="page-no text-center text-light"><strong>Page No : <%= p %></strong></p>
+              <p class="page-no text-center"><strong>Page No : <%= p %></strong></p>
               <div class="page pr-2 pl-2">
                 <img class="lazy pdfimage" data-src="https://s3.ap-south-1.amazonaws.com/kitaabx.com/testImages/cn_<%= p %>.jpg"/>
                 <h1 class="watermark">kitaabx.com</h1>
@@ -141,55 +142,9 @@
       });
     });
   </script>
-    <script>
-      const yearify = ["0", "I", "II", "III", "IV"];
-      const branchify = {"CS" : "Computer Science","IT" : "Information Techology","MXTC" : "Mechatronics","EXTC" : "Electronics & Telecommunication","CIVIL" : "Civil","MECH" : "Mechanical"};
-      $( document ).ready(() => {
-        $.post("/api/main/get/materials",
-        { title: "<%= material.subject.title %>", year: <%= material.subject.year %>, branch: "<%= material.subject.branch %>"},
-        (data, status) =>{
-          console.log("Data: "+data+"\nStatus: "+status);
-          return JSON.stringify(data)
-        })
-        .then(materials => {
-          console.log(materials);
-          if(materials.length !== 0){
-            let forDifferentDiv = `<h2 class="mt-5">Trending in "<%= material.subject.title %>" from other streams:</h2><hr/>`;
-            materials.forEach(material => {
-              let topicsCovered = '';
-              for(let i=0; i<= 3; i++){
-                if(i<3){
-                  topicsCovered += `<li><h6>${material.contents[i].chapterName}</li></h6>`;
-                }else{
-                  if((material.contents.length - 3) !== 0){
-                    topicsCovered += `+${material.contents.length - 3} more`;
-                  }
-                }
-              }
-              forDifferentDiv += `<div class="row bg-light course-description containernew1 shadow" onmouseover="hovered(this)" onmouseout="removed(this)" onclick="javascript:location.href= '/material/${material._id}'">
-                <div class="col-md-3">
-                  <div class="course-image" style="border:2px solid grey; height: 140px; margin:10px 0; width:100%; background-image:url('https://udemy-images.udemy.com/course/240x135/1638522_fbdf.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center; "></div>
-                </div>
-                <div class="col-md-5 p-2">
-                  <ul class="course-details">
-                    <li><h4> by</h4></li>
-                    <li><h6><strong>Under guidance of: </strong> ${material.guidedBy}</h6></li>
-                    <li><h6>By: ${material.publisher.name.first} ${material.publisher.name.last}</h6></li>
-                    <li><h6><strong>Branch: </strong>${branchify[material.branch]}</h6></li>
-                    <li><h6><strong>Year: </strong>${yearify[material.year]}</h6></li>
-                  </ul>
-                </div>
-                <div class="col-md-4 p-2">
-                  <ul class="course-details">
-                    <li><h4><u>Topics Covered:</u></h4></li>
-                    ${topicsCovered}
-                  </ul>
-                </div>
-              </div>`;
-            })
-            $('#differentMaterials').html(forDifferentDiv);
-          }
-        });
-      });
-    </script> 
+  <script>
+    $(document).ready(() => {
+      getMaterials("<%= material.subject.title %>", <%= material.subject.year %>, "<%= material.subject.branch %>");
+    })
+  </script> 
 <%- include ../partials/footer.ejs %>

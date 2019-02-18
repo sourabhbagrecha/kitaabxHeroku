@@ -7,7 +7,8 @@ exports.getSignup = (req, res, next) => {
 		isLoggedIn : req.session.isLoggedIn || false, 
 		user: req.user,
 		errorMessage: req.flash('error'),
-		successMessage: req.flash('success')
+		successMessage: req.flash('success'),
+		path: '/auth/signup'
 	});
 };
 
@@ -17,7 +18,8 @@ exports.getLogin = (req, res, next) => {
 		isLoggedIn : req.session.isLoggedIn || false, 
 		user: req.user,
 		errorMessage: req.flash('error'),
-		successMessage: req.flash('success')
+		successMessage: req.flash('success'),
+		path: '/auth/login'
 	});
 };
 

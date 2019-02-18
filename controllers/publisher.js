@@ -9,7 +9,8 @@ exports.getSignup = (req, res, next) => {
   res.render('publisher/signup',{
     user: req.user,
     isLoggedIn: req.session.isLoggedIn,
-    title: 'Publisher| Signup'   
+    title: 'Publisher| Signup',
+    path: '/publisher/signup'  
   })
 }
 
@@ -36,7 +37,8 @@ exports.getDashboard = (req, res, next) => {
         user: req.user,
         isLoggedIn: req.session.isLoggedIn,
         title: 'Publisher| Dashboard',
-        createdMaterials: user.createdMaterials
+        createdMaterials: user.createdMaterials,
+        path: '/publisher/dashboard'
       })
     })
     .catch(err => {
@@ -49,7 +51,8 @@ exports.getCreateMaterialPage = (req, res, next) => {
   res.render('publisher/createMaterial1',{
     user: req.user,
     isLoggedIn: req.session.isLoggedIn,
-    title: 'Create Material'
+    title: 'Create Material',
+    path: '/publisher/createMaterial/step1'
   })
 }
 
@@ -58,7 +61,8 @@ exports.getStep2 = (req, res, next) => {
     user: req.user,
     isLoggedIn: req.session.isLoggedIn,
     title: 'Create Material',
-    materialId: req.params.id
+    materialId: req.params.id,
+    path: '/publisher/createMaterial/step2'
   })
 }
 
@@ -70,7 +74,24 @@ exports.postStep1 = (req, res, next) => {
     publisher: req.user._id.toString()
   })
   .then(results => {
-    return res.redirect(`/publisher/createMaterial/${results._id}/uploadpdf`);
+    const savedResults = results;
+    console.log(results)
+    User.findById(req.user._id)
+      .then(user => {
+        user.createdMaterials.push(results._id);
+        return user.save();
+      })
+      .then(() => {
+        Subject.findById(savedResults.subject)
+          .then(subject => {
+            subject.materials.push(savedResults._id);
+            return subject.save();
+          })
+          .catch(err => console.log(err));
+      })
+      .then(results => {
+        return res.redirect(`/publisher/createMaterial/${savedResults._id}/uploadpdf`);
+      })
   })
   .catch(err => {
     console.log(err);
@@ -95,26 +116,10 @@ exports.postStep2 = (req, res, next) => {
     material.contents = contentsArray;
     return material.save()
   })
-  .then(results => {
-    const savedResults = results;
-    console.log(results)
-    User.findById(req.user._id)
-      .then(user => {
-        user.createdMaterials.push(results._id);
-        return user.save();
-      })
-      .then(() => {
-        Subject.findById(savedResults.subject)
-          .then(subject => {
-            subject.materials.push(savedResults._id);
-            return subject.save();
-          })
-          .catch(err => console.log(err));
-      })
-      .then(outputs => {
-        console.log(outputs);
-        return res.redirect('/');
-      })
+  .then(outputs => {
+    console.log(outputs);
+    return res.redirect('/publisher/dashboard');
   })
+
   .catch(err => console.log(err));
 }

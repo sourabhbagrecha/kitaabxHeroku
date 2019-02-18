@@ -1,5 +1,139 @@
 <%- include ../partials/head.ejs %>
+<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
 <style>
+  /* steps */
+  .step-wrapper {
+    margin: 30px;
+    margin-bottom: 200px;
+    position: relative;
+  }
+
+  .linestep {
+    text-align: center;
+    max-width: 250px;
+    position: absolute;
+  }
+  .linestep .num {
+    color: #fff;
+    border-radius: 100px;
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    font-weight: bold;
+    background: #6ed3cf;
+  }
+  .linestep p {
+    width: 250px;
+    position: absolute;
+    margin-top: 7px;
+    font-weight: 500;
+    line-height: normal;
+    font-size: 18px;
+  }
+  .linestep p.top {
+    bottom: 50px;
+    left: -110px;
+  }
+  .linestep p.bottom {
+    left: -110px;
+  }
+  .linestep p.left {
+    width: 200px;
+    right: 34px;
+    top: -17px;
+  }
+  .linestep p.right {
+    width: 200px;
+    left: 45px;
+    top: -25px;
+  }
+
+  .linestep {
+    visibility: hidden;
+  }
+
+  .path {
+    visibility: hidden;
+  }
+
+  .move-line .path {
+    visibility: visible;
+    stroke-dasharray: 3700;
+    stroke-dashoffset: 3700;
+    animation: moveline 4s linear forwards;
+  }
+  .move-line .linestep {
+    animation-name: show-step-item;
+    animation-duration: .2s;
+    animation-fill-mode: forwards;
+  }
+  .move-line .linestep1 {
+    animation-delay: .4s;
+  }
+  .move-line .linestep2 {
+    animation-delay: .8s;
+  }
+  .move-line .linestep3 {
+    animation-delay: 1.2s;
+  }
+  .move-line .linestep4 {
+    animation-delay: 1.6s;
+  }
+  .move-line .linestep5 {
+    animation-delay: 2s;
+  }
+  .move-line .linestep6 {
+    animation-delay: 2.4s;
+  }
+  .move-line .linestep7 {
+    animation-delay: 2.8s;
+  }
+  .move-line .linestep8 {
+    animation-delay: 3.2s;
+  }
+
+  @keyframes show-step-item {
+    from {
+      transform: scale(0.2);
+      opacity: 0;
+    }
+    to {
+      visibility: visible;
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  @keyframes moveline {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+</style>
+<style>
+  .intro{
+    position: relative;
+    min-height: 100vh;
+    background-image: linear-gradient(#9068be, #e1e8f0);
+  }
+  .intro__contents{
+    position: absolute;
+    float: left;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .intro__contents__heading{
+    font-size: 6rem;
+    color: white;
+    text-align: center;
+    font-family: 'Raleway', sans-serif;
+  }
+  .list-group-item .left,.middle,.right{
+    width: 33%;
+    overflow: hidden;
+  }
   .card-logo h1{
     font-size: 4rem;
     position: relative;
@@ -8,98 +142,249 @@
   }
   .card-logo{
     height: 135px;
-    background-color: lightcoral;
+    background-color: #9068be;
     color: white;
   }
-  .landing{
-    font-family: 'Roboto', sans-serif;
+  .branch-logo{
+    height: 135px;
+    color: #9068be;
+    background-image: linear-gradient(#6ed3cf, #c1a8db);
   }
+  .branch-logo h1{
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);    
+  }
+  .branch-body{
+    color: #774aaa;
+    background-color: #e1e8f0;
+  }
+  .card--featured{
+    cursor: pointer;
+  }
+  #search-subject{
+    height: 3rem; 
+    font-size: 2rem;
+    width: 100%;
+  }
+  .signup-publisher{
+    background-color: #9068be; 
+    color: white;
+    font-weight: 600;
+    opacity: 0.8;
+  }
+  .signup-publisher:hover{
+    opacity: 1;
+  }
+  @media (max-width: 768px){
+    .intro__contents__heading{
+      font-size: 4rem;
+    }
+    .steps-container{
+      display: none;
+    }
+    #search-subject{
+      font-size: 1rem;
+    }
+  } 
 </style>
+<script>
+  const showResults = (data) => {
+    let displayString = '';
+    if(data.length === 0){
+      displayString += `<li class="list-group-item">No results</li>`;
+    } else{
+      data.forEach(subject => {
+        console.log(subject);
+        const branch = `${subject.branch}`;
+        displayString += `<li class="row list-group-item">
+                            <span style=""><a href="/subject/${subject._id}"> ${subject.title}</a></span> in 
+                            <span style="color: rgb(124, 124, 124); font-size: 0.9rem;">${branchify[branch]} - ${yearify[subject.year]} year</span>
+                            <span style="color: rgb(124, 124, 124); float: right;">(Materials Available: ${subject.materials.length})</span>
+                          </li>`;
+      });
+    }
+    $('#results-display').html(displayString);
+  }
+  const searchSubject = (e) => {
+    console.log(e.value);
+    if(e.value === ''){
+      $('#results-display').html(''); 
+    }else{
+      $("#results").html(e.value)
+      $.get(`/api/main/search?text=${e.value}`, (data, status) => {
+        showResults(data);
+      })
+    }
+  }
+</script>
 
 <%- include ../partials/header.ejs %>
 <% function romanize (num) {if (isNaN(num)) return NaN; var digits = String(+num).split(""),key = ["","C","CC","CCC","CD","D","DC","DCC","DCCC","CM","","X","XX","XXX","XL","L","LX","LXX","LXXX","XC","","I","II","III","IV","V","VI","VII","VIII","IX"],roman = "",i = 3;while (i--)roman = (key[+digits.pop() + (i * 10)] || "") + roman;return Array(+digits.join("") + 1).join("M") + roman;} %>
   <main>
     <% branches = [{short: 'CS', title:'Computer Science', years: [1,2,3,4], imageUrl:"https://files.askiitians.com/cdn1/images/2014630-184237749-8880-cs.jpg"}, {short: 'IT', title:'Information Technology', years: [1,2,3], imageUrl:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1HC-s3viHNxHCaYlu_n0V6htUY4CC2bVpVacog4YtD_A05l08"}, {short: 'EXTC', title:'Electronics And TeleComm.', years: [1,2,3,4],imageUrl:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0ffnaVMLIHd4yGXhkwCrOQTW-aE81cvn_mfudjgCTez6jkc7vEA'}, {short: 'MECH', title:'Mechanical', years: [1,2,3,4], imageUrl:'https://www.mvjpolytechnic.edu.in/wp-content/uploads/2016/05/mvj-polytechnic-lab04.png'}, {short: 'MXTC', title:'Mechatronics', years: [1,2,3,4], imageUrl:"https://vub.hr/images/uploads/meh_logo.png"},{short: 'CIVIL', title:'Civil', years: [1,2,3,4], imageUrl:'https://image.spreadshirtmedia.com/image-server/v1/mp/compositions/T812A2MPA3140PT17X22Y0D1012883364FS4200/views/1,width=500,height=500,appearanceId=2,backgroundColor=000000,noPt=true,version=1543820067/civil-engineering-shirt-men-s-premium-t-shirt.jpg'} ]%>
-    <div class="container">
-      <% if(errorMessage.length > 0){ %>
-        <div class="alert alert-danger mt-5">
-          <%= errorMessage[0] %>
-        </div>
+    <% const yearify = ["0", "I", "II", "III", "IV"]; %>
+    <% const branchify = {"CS" : "Computer Science","IT" : "Information Techology","MXTC" : "Mechatronics","EXTC" : "Electronics & Telecommunication","CIVIL" : "Civil","MECH" : "Mechanical"} %>
+    <% const MONTH = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]; %>
+    <!-- <div class="container"> -->
+        <% if(errorMessage.length > 0){ %>
+          <div class="alert alert-danger mt-5">
+            <%= errorMessage[0] %>
+          </div>
         <% } %>
         <% if( successMessage.length > 0){ %>
           <div class="alert alert-success mt-5">
             <%= successMessage[0] %>
           </div>
-          <% } %>
-        <div class="landing">
-          <div class="row">
-            <div class="col-lg-6" style="font-size: 5rem;">
-              Welcome to KitaabX
-            </div>
-            <div class="col-lg-6" style="font-size: 4.5rem; color: rgb(241, 88, 88);">
-              Wonderful notes at your fingertips
-            </div>
-          </div>
-        </div>
-        <h2 class="bg-light mt-5">Trending:</h2>
-          <div class="row">
-            <% for(i=0; i<4; i++){%>          
-              <div class="card1 col-lg-3 col-sm-6 d-flex justify-content-center mt-5" onclick="javascript:location.href= '/material/5c3d0362bc10485708b95382'">
-                <div class="card shadow" style="width: 18rem;" onmouseover="hovered(this)" onmouseout="removed(this)">
-                  <div class="card-logo text-center"><h1>EM-IV</h1></div>
-                  <div class="card-body">
-                    <h5 class="card-title">Engineering Mathematics-IV</h5>
-                    <h6 class="card-subtitle mb-2 text-muted my-2">Handwritten</h6>
-                    <h5>Branch: CS</h5>
-                    <h5>Year: 2</h5>
-                    <p><strong>Submitted on:</strong> 15/1/2019</p>
-                  </div>
+        <% } %>
+          <div class="intro">
+            <div class="container intro__contents"> 
+              <h1 class="intro__contents__heading mb-5">Welcome to KitaabX<span style="font-size: 1.7rem;">&nbsp&nbspβ</span></h1>
+              <div class="row">
+                <div class="col-2 col-sm-1">
+                  <i class="fa fa-search" style="font-size: 3rem; color: white;"></i>
+                </div>
+                <div class="col-10 col-sm-11">
+                  <input class="form-control" oninput="searchSubject(this);" id="search-subject" style="" type="text" placeholder="Subjects you wanna study today..."/>
                 </div>
               </div>
-            <% }%>
+              <div class="row">
+                <div class="col-2"></div>
+                <ul class="list-group col-10" id="results-display"></ul>
+              </div>
+            </div>
           </div>
-      <div class="container mt-5">
-        <div class="row">
-          <% branches.forEach( branch => {%>
-            <div class="card1 col-lg-4 col-sm-6 d-flex justify-content-center mt-5" data-toggle="modal" data-target="#<%= branch.short %>Modal">
-                <div class="card shadow" style="width: 18rem;" onmouseover="hovered(this)" onmouseout="removed(this)">
-                    <img class="card-img-top " src="<%= branch.imageUrl %>" alt="Card image cap" style="height:180px; opacity: 0.8">
+        <div class="container">
+            <div class="jumbotron mt-5 p-3 mb-0">
+              <h1>Featured Handwritten Notes:</h1>
+            </div>
+            <div class="row">
+              <% featuredM.forEach(material => {%>
+                <div class="card--featured col-lg-3 col-sm-6 d-flex justify-content-center mt-4" onclick="javascript:location.href= '/material/<%= material._id %>'">
+                  <div class="card shadow" style="width: 18rem;" onmouseover="hovered(this)" onmouseout="removed(this)">
+                    <div class="card-logo text-center"><h1><%= material.subject.shortForm %></h1></div>
                     <div class="card-body">
-                        <h5 class="card-title"><%= branch.title %></h5>
-                    </div>
-                </div>
-            </div>
-            <!-- <button class="btn btn-primary" data-toggle="modal" data-target="#<%= branch.short %>Modal"><%= branch.title %></button> -->
-            <div class="modal fade" id="<%= branch.short %>Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="exampleModalCenterTitle"><%= branch.title %></h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div class="modal-body">
-                      <div class="container" style="background-image: '<% branch.imageUrl %>'">
-                        <div class="row">
-                          <% branch.years.forEach(year => {%>  
-                            <!-- <button class="year-modal-body btn" href="/course?year=<%= year %>&branch=ComputerScience"><%= romanize(year) %> year</button> -->
-                            <input type="button" class="year-modal-body btn" onclick="location.href='/subjects?year=<%= year %>&branch=<%= branch.short %>';" value="<%= romanize(year) %> year" />
-                          <% }) %>
-                        </div>
-                    </div>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <h5 class="card-title"><%= material.subject.title %></h5>
+                      <h6 class="card-subtitle mb-2 text-muted my-2"><%= material.notesType %></h6>
+                      <h6><strong>Branch:</strong><%= branchify[material.branch] %></h6>
+                      <h6><strong>Year:</strong><%= yearify[material.year] %></h6>
+                      <p><strong>Published on: </strong><%= MONTH[material.createdAt.getMonth()] %>,<%= material.createdAt.getYear() + 1900 %></p>
                     </div>
                   </div>
                 </div>
+              <% }) %>
+            </div>
+        <div id="branch">
+          <div class="jumbotron mt-5 p-3 mb-0">
+            <h1>Featured Branches:</h1>
+          </div>
+          <div class="row">
+            <% branches.forEach( branch => {%>
+              <div class="card1 col-lg-4 col-sm-6 d-flex justify-content-center mt-4" data-toggle="modal" data-target="#<%= branch.short %>Modal">
+                  <div class="card shadow" style="width: 18rem;" onmouseover="hovered(this)" onmouseout="removed(this)">
+                      <div class="card-img-top branch-logo" src="<%= branch.imageUrl %>" style="height:180px;"><h1 style="font-size: 6rem; text-align: center;"><%= branch.short %></h1></div>
+                      <div class="card-body branch-body">
+                          <h5 class="branch-title"><%= branch.title %></h5>
+                      </div>
+                  </div>
               </div>
-            <% })%>    
-        </div>
-      </div>
+              <div class="modal fade" id="<%= branch.short %>Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle"><%= branch.title %></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="container" style="background-image: '<% branch.imageUrl %>'">
+                          <div class="row">
+                            <% branch.years.forEach(year => {%>  
+                              <input type="button" class="year-modal-body btn" onclick="location.href='/subjects?year=<%= year %>&branch=<%= branch.short %>';" value="<%= romanize(year) %> year" />
+                            <% }) %>
+                          </div>
+                      </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <% })%>    
+          </div>
+          <div class="publisher steps-container bg-light pb-5">
+            <div class="jumbotron mt-5 p-3 mb-0">
+              <div class="row">
+                <div class="col-lg-9">
+                  <h1>Becoming a Publisher is Easy!<h1>
+                </div>
+                <div class="col-lg-3">
+                  <% if(user.isPublisher){ %><form action="/publisher/dashboard" method="GET"><button class="btn btn-lg signup-publisher">Publisher Dashboard</button></form><% } else { %><form action="/publisher/signup" method="GET"><button class="btn btn-lg signup-publisher">Become a Publisher Today</button></form><%}%>
+                </div>
+              </div>
+            </div>
+            <div class="container">
+              <h3><u>Publish your material in 8 easy steps</u></h3>
+                <div class="step-wrapper move-line">
+                  <article class="linestep linestep1" style="left: 56%; top: -2%;"> 
+                    <span class="num"> 1</span>
+                    <p class="bottom">
+                      Create an account.<br>
+                      Quickly sign up for a publisher account!
+                    </p>
+                  </article>
+                  <article class="linestep linestep2" style=" right: -0.5%; top: 20%;"> 
+                    <span class="num"> 2</span>
+                    <p class="left">
+                      Go to your publisher dashboard
+                    </p>
+                  </article>
+                  <article class="linestep linestep3" style="left: 68%; top: 44%;"> 
+                    <span class="num"> 3</span>
+                    <p  class="bottom">
+                        Click "Create a new material".<br>Add basic details like:<br>subject-name, branch, year etc. And click "Next".
+                    </p>
+                  </article>
+                  <article class="linestep linestep4" style="left: 32%; top: 44.5%;"> 
+                    <span class="num">4</span>
+                    <p class="top">
+                      Upload your scanned pdf of notes.(Only pdf files are accepted).
+                    </p>
+                  </article>
+                  <article class="linestep linestep5" style="left: -1.5%; top: 68%;"> 
+                    <span class="num"> 5</span>
+                    <p  class="right">
+                      Meanwhile create syllabus for the material (notes). Add units and their corresponding page no.
+                    </p>
+                  </article>
+                  <article class="linestep linestep6" style="left: 21%;  top: 93%;"> 
+                    <span class="num"> 6</span>
+                    <p  class="bottom">
+                      Click "Submit for verification".
+                    </p>
+                  </article>
+                  <article class="linestep linestep7" style="left: 53%; top: 93%;"> 
+                    <span class="num"> 7</span>
+                    <p class="bottom">
+                      Our content manager will check the material for completeness and correctness and once it is verified your material will be published automatically on your behalf.
+                    </p>
+                  </article>
+                  <article class="linestep linestep8" style="left: 86%; top: 93%;"> 
+                    <span class="num"> 8</span>
+                    <p  class="bottom">
+                      You can manage all your materials in the publisher dashboard.<br/>Yay! You did it.
+                    </p>
+                  </article>
+                  <svg width="100%" viewBox="0 0 1156 608" xmlns="http://www.w3.org/2000/svg">
+                    <path class="path" d="m560.30957,10.588011c0,0 438.0947,1.90476 439.04708,1.90476c0.95238,0 144.57857,-1.02912 143.80934,137.14269c-0.76923,138.17181 -116.81095,142.30859 -131.61967,143.8923c-14.80873,1.58372 -840.41472,-0.71429 -860.5941,0.71429c-20.17938,1.42858 -148.4991,6.80903 -146.83244,147.05973c1.66666,140.2507 129.52365,152.14266 129.33243,151.27321c0.19122,0.86945 815.268425,2.687632 951.42748,0" opacity="0.5" stroke-width="7" stroke="#9068be" fill="none"/>
+                  </svg>
+                </div>
+              </div>
+          </div>
+        </div> 
     </main>
-    <!-- Button trigger modal -->
     
   
     

@@ -1,0 +1,50 @@
+<%- include ../partials/head.ejs %>
+<style>
+  .card-logo h1{
+  font-size: 4rem;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  }
+  .card-logo{
+    height: 135px;
+    background-color: lightcoral;
+    color: white;
+  }
+  ul{
+    list-style-type: none;
+    padding: 0px;
+  }
+  #new-material-btn{
+    background-color: lightsalmon;
+    font-size: 1.8rem;
+  }
+  #new-material-btn:hover{
+    background-color: salmon;
+    color: white;
+  }
+</style>
+
+<%- include ../partials/header.ejs %>      
+  <main>
+    <div class="container">
+      <h1 class="text-center bg-light"><hr/><hr>Admin Dashboard<hr/><hr></h1>
+      <div class="row">
+          <% notVMaterials.forEach(material => {%>
+              <div class="card1 col-lg-3 col-sm-6 d-flex justify-content-center mt-5" onclick="javascript:location.href= '/admin/manage/<%= material._id %>'">
+                  <div class="card shadow" style="width: 18rem;" onmouseover="hovered(this)" onmouseout="removed(this)">
+                      <div class="card-logo text-center"><h1><%= material.subject.shortForm %></h1></div>
+                      <div class="card-body">
+                          <h5 class="card-title"><%= material.subject.title %></h5>
+                          <h6 class="card-subtitle mb-2 text-muted my-2"><%= material.notesType %></h6>
+                          <h5>Branch: <%= material.branch%></h5>
+                          <h5>Year: <%= material.year %></h5>
+                          <p><strong>Submitted on:</strong> <%= material.createdAt.getDate() %>/<%= material.createdAt.getMonth()+1 %>/<%= material.createdAt.getYear()+1900 %></p>
+                      </div>
+                  </div>
+              </div>
+          <% }) %>
+  </div>
+    </div>
+  </main>
+<%- include ../partials/footer.ejs %>

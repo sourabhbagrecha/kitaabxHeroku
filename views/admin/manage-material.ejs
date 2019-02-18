@@ -1,0 +1,49 @@
+<%- include ../partials/head.ejs %>
+<style>
+  .general-form{
+    margin: auto;
+    background-color: lightsalmon;
+    box-shadow: 10px 10px 5px rgb(231, 234, 236);
+    padding: 20px;
+    border-radius: 2%;
+    /* min-width: 400px; */
+  }
+  .btn{
+    border-radius: 0 !important;
+  }
+</style>
+<%- include ../partials/header.ejs %>
+<main>
+  <form class="material-details mt-5" action="/admin/manage/<%= material._id%>" method="POST">
+    <div class="container">
+      <div class="col-lg-9 general-form">
+        <h1>Manage material</h1>
+        <hr/>
+        <div class="">
+          <h5><strong>Subject:</strong>&nbsp; <%= material.subject.title%></h5>
+          <h5><strong>Branch:</strong>&nbsp; <%= material.branch %></h5>
+          <h5><strong>Year:</strong>&nbsp; <%= material.year %></h5>
+          <h5><strong>Publisher:</strong>&nbsp; <%= material.publisher.name.first + ' ' + material.publisher.name.last %> <%= material.publisher.email%></h5>
+          <h5><strong>Under Guidance Of:</strong>&nbsp; <%= material.guidedBy %></h5>
+        </div>
+        <h6>Click <a href="<%= material.pdfUrl %>" target="_blank">here</a> to view pdf.</h6>
+        <div class="form-group">
+          <h6>Resource URL :</h6>
+          <input name="resourceUrl" class="form-control" type="text" placeholder="AWS S3 bucket url of images"/>
+        </div>
+        <div class="form-group">
+          <h6>Total Pages:</h6>
+          <input name="totalPages" class="form-control" type="number" placeholder="Enter the no. of pages."/>
+        </div>
+        <div class="form-group">
+        </div>
+        <div class="form-group">
+        </div>
+        <div class="form-group">
+        </div>        
+        <button type="submit" id="verify-btn" class="btn btn-lg btn-primary">Save and Verify</button>
+      </div>
+    </div>
+  </form>
+</main>
+<%- include ../partials/footer.ejs %>

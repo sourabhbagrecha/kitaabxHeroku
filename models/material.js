@@ -44,11 +44,18 @@ const materialSchema = new Schema({
     type: String
   },
   approved:{
-      type: Boolean,
-      default: false
+    type: Boolean,
+    default: false
+  },
+  isVerified: {
+    type: Boolean,
+    default: false
   },
   verificationLevel:{
-      type: Number, min: 1, max: 4, default: 1
+    type: Number, min: 1, max: 4, default: 1
+  },
+  resourceUrl: {
+    type: String
   }
 },{timestamps: true});
 

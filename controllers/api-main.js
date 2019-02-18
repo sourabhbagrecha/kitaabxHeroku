@@ -1,6 +1,15 @@
 const Subject = require('../models/subject');
 const Material = require('../models/material');
 
+exports.searchSubject = (req, res, next) => {
+  const text = req.query.text;
+  Subject.find({"$or": [ {shortForm: {"$regex": new RegExp(text, "i")}} , {title: {"$regex": new RegExp(text, "i")}} ] })
+    .limit(7)
+    .then(results => {
+      return res.json(results);
+    })
+    .catch(err => console.log(err));
+}
 
 exports.getSubjects = (req, res, next) => {
   console.log("year:",req.query.year , "branch: ",req.query.branch);

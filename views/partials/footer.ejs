@@ -16,9 +16,9 @@ var prevScrollpos = window.pageYOffset;
 window.onscroll = function() {
 var currentScrollPos = window.pageYOffset;
   if (prevScrollpos > currentScrollPos || currentScrollPos < 50) {
-    $("#navbar").slideDown('fast');
+    $("#navbar").slideDown('slow');
   } else {
-    $("#navbar").slideUp('fast');
+    $("#navbar").slideUp('slow');
   }
   prevScrollpos = currentScrollPos;
 }

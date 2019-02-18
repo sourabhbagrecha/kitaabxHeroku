@@ -6,7 +6,7 @@ var multiparty = require('connect-multiparty'),
 const isPublisher = require('../middleware/is-publisher');
 const checkO = require('../middleware/check-ownership');
 const pController = require('../controllers/publisher');
-const awsController = require('../controllers/aws-upload');
+const awsController = require('../trash/aws-upload');
 
 router.get('/dashboard', isPublisher, pController.getDashboard);
 router.get('/createMaterial', isPublisher, pController.getCreateMaterialPage);

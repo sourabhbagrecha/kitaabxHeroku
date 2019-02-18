@@ -2,13 +2,21 @@ const Subject = require('../models/subject');
 const Material = require('../models/material');
 
 exports.getHome = (req, res, next) => {
-  return res.render('main/home',{
-    title: 'Kitaabx| Welcome',
-    isLoggedIn: req.session.isLoggedIn,
-    user: req.user,
-		errorMessage: req.flash('error'),
-		successMessage: req.flash('success')
-  });
+  Material.find({isVerified: true})
+    .limit(4)
+    .populate({'path': 'subject', 'field' : 'title shortForm'})
+    .then(materials => {
+      return res.render('main/home',{
+        title: 'Kitaabx| Welcome',
+        isLoggedIn: req.session.isLoggedIn,
+        user: req.user,
+        errorMessage: req.flash('error'),
+        successMessage: req.flash('success'),
+        path: '/',
+        featuredM : materials
+      });
+    })
+    .catch(err => console.log(err));
 };
 
 exports.getSubjects = (req, res, next) => {
@@ -19,7 +27,8 @@ exports.getSubjects = (req, res, next) => {
         isLoggedIn: req.session.isLoggedIn,
         user: req.user,
         subjects: subjects,
-        query: req.query
+        query: req.query,
+        path: '/subjects'
       })
     })
     .catch(err => console.log(err));
@@ -33,7 +42,8 @@ exports.getSubject = (req, res, next) => {
         title: subject.title + ' | KitaabX',
         isLoggedIn: req.session.isLoggedIn,
         user: req.user,
-        subject: subject
+        subject: subject,
+        path: '/subject'
       })
     })
     .catch(err => console.log(err));
@@ -51,7 +61,8 @@ exports.getMaterial = (req, res, next) => {
         title: title,
         isLoggedIn: req.session.isLoggedIn,
         user: req.user,
-        material: material
+        material: material,
+        path: '/material'
       })
     })
     .catch(err => {

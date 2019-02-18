@@ -2,6 +2,7 @@
 <% const branchify = {"CS" : "Computer Science","IT" : "Information Techology","MXTC" : "Mechatronics","EXTC" : "Electronics & Telecommunication","CIVIL" : "Civil","MECH" : "Mechanical"}%>
 
 <%- include ../partials/head.ejs %>
+  <script src="/js/m-different-branch.js"></script>
   <style>
     .course-details{
       list-style-type: none;
@@ -23,40 +24,6 @@
       list-style-type: none;
       padding: 0px;
     }
-    .containernew {
-      position: relative;
-      width: 50%;
-    }
-    .overlay {
-      position: absolute;
-      opacity: 0.95;
-      bottom: 100%;
-      left: 0;
-      right: 0;
-      background-color: lightcoral;
-      overflow: hidden;
-      width: 100%;
-      height:0;
-      transition: .5s ease;
-    }
-
-    .containernew1:hover .overlay {
-      bottom: 0;
-      height: 100%;
-    }
-
-    .text {
-      color: white;
-      font-size: 15px;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      -webkit-transform: translate(-50%, -50%);
-      -ms-transform: translate(-50%, -50%);
-      transform: translate(-50%, -50%);
-      text-align: center;
-    }
-
   </style>
 <%- include ../partials/header.ejs %>
   <main>
@@ -96,10 +63,9 @@
         </div>
         <% subject.materials.forEach(material =>{ %>
         <div class="row bg-light course-description containernew1 shadow" onmouseover="hovered(this)" onmouseout="removed(this)" onclick="javascript:location.href= '/material/<%= material._id %>'">
-          <div class="col-md-3">
-            <div class="course-image" style="border:2px solid grey;height: 140px; margin:10px 0; width:100%; background-image:url('https://udemy-images.udemy.com/course/240x135/1638522_fbdf.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center; "></div>
-            <div class="overlay">
-                <div class="text">Published by: <br><strong><%= material.publisher.name.first %> <%= material.publisher.name.last %></strong><br> Uploaded on: <br>13/01/2019</div>
+          <div class="col-md-3 p-2" style="margin: 0px;">
+            <div class="course-image">
+              <img src="https://s3.ap-south-1.amazonaws.com/kitaabx.com/testImages/cn_1.jpg" alt="Course Image" style="margin: 0px;padding: 0px;width: 100%; max-height:160px; overflow: hidden;">
             </div>
           </div>
           <div class="col-md-5 p-2">
@@ -125,62 +91,13 @@
         </div>
         <% }) %>                
         <div id="differentMaterials">
-  
+
         </div>
       </div>
   </main>
   <script>
-    const yearify = ["0", "I", "II", "III", "IV"];
-    const branchify = {"CS" : "Computer Science","IT" : "Information Techology","MXTC" : "Mechatronics","EXTC" : "Electronics & Telecommunication","CIVIL" : "Civil","MECH" : "Mechanical"};
-    $( document ).ready(() => {
-      $.post("/api/main/get/materials",
-      { title: "<%= subject.title %>", year: <%= subject.year %>, branch: "<%= subject.branch %>"},
-      (data, status) =>{
-        console.log("Data: "+data+"\nStatus: "+status);
-        return JSON.stringify(data)
-      })
-      .then(materials => {
-        console.log(materials);
-        if(materials.length !== 0){
-          let forDifferentDiv = `<h2 class="mt-5">Trending in "<%= subject.title %>" from other streams:</h2><hr/>`;
-          materials.forEach(material => {
-            let topicsCovered = '';
-            for(let i=0; i<= 3; i++){
-              if(i<3){
-                topicsCovered += `<li><h6>${material.contents[i].chapterName}</li></h6>`;
-              }else{
-                if((material.contents.length - 3) !== 0){
-                  topicsCovered += `+${material.contents.length - 3} more`;
-                }
-              }
-            }
-            forDifferentDiv += `<div class="row bg-light course-description containernew1 shadow" onmouseover="hovered(this)" onmouseout="removed(this)" onclick="javascript:location.href= '/material/${material._id}'">
-              <div class="col-md-3">
-                <div class="course-image" style="border:2px solid grey;height: 140px; margin:10px 0; width:100%; background-image:url('https://udemy-images.udemy.com/course/240x135/1638522_fbdf.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center; "></div>
-                <div class="overlay">
-                    <div class="text">Published by: <br><strong>${material.publisher.name.first} ${material.publisher.name.last}</strong><br> Uploaded on: <br>13/01/2019</div>
-                </div>
-              </div>
-              <div class="col-md-5 p-2">
-                <ul class="course-details">
-                  <li><h4> by</h4></li>
-                  <li><h6><strong>Under guidance of: </strong> ${material.guidedBy}</h6></li>
-                  <li><h6>By: ${material.publisher.name.first} ${material.publisher.name.last}</h6></li>
-                  <li><h6><strong>Branch: </strong>${branchify[material.branch]}</h6></li>
-                  <li><h6><strong>Year: </strong>${yearify[material.year]}</h6></li>
-                </ul>
-              </div>
-              <div class="col-md-4 p-2">
-                <ul class="course-details">
-                  <li><h4><u>Topics Covered:</u></h4></li>
-                  ${topicsCovered}
-                </ul>
-              </div>
-            </div>`;
-          })
-          $('#differentMaterials').html(forDifferentDiv);
-        }
-      });
-    });
-  </script>    
+    $(document).ready(() => {
+      getMaterials("<%= subject.title %>", <%= subject.year %>, "<%= subject.branch%>");
+    })
+  </script>   
 <%- include ../partials/footer.ejs %>
