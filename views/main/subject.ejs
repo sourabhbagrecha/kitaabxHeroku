@@ -39,44 +39,47 @@
       <hr/>
     </div>
     <div class="container">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-        <div class="bg-light text-center" style="height: 50vh;">
-          <h1 class="mt-5"><i class="fas fa-heart-broken" style="font-size: 9rem"></i></h1>
-          <h3 class="mt-5">There is nothing here</h3>
-          <h2 class="">Keep exploring</h2>
-          <form action="/" method="GET">
-            <button class="btn btn-lg btn-success mt-3" style="background-color: #9068be;">Explore</button>
-          </form>
-        </div>
-        <% subject.materials.forEach(material =>{ %>
-        <div class="row bg-light course-description containernew1 shadow" onmouseover="hovered(this)" onmouseout="removed(this)" onclick="javascript:location.href= '/material/<%= material._id %>'">
-          <div class="col-md-3 p-2" style="margin: 0px;">
-            <div class="course-image">
-              <img src="https://s3.ap-south-1.amazonaws.com/kitaabx.com/testImages/cn_1.jpg" alt="Course Image" style="margin: 0px;padding: 0px;width: 100%; max-height:160px; overflow: hidden;">
+        <% if(subject.materials.length === 0){ %>
+          <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+          <div class="bg-light text-center" style="height: 50vh;">
+            <h1 class="mt-5"><i class="fas fa-heart-broken" style="font-size: 9rem"></i></h1>
+            <h3 class="mt-5">There is nothing here</h3>
+            <h2 class="">Keep exploring</h2>
+            <form action="/" method="GET">
+              <button class="btn btn-lg btn-success mt-3" style="background-color: #9068be;">Explore</button>
+            </form>
+          </div>
+        <% } else { %>
+          <% subject.materials.forEach(material =>{ %>
+          <div class="row bg-light course-description containernew1 shadow" onmouseover="hovered(this)" onmouseout="removed(this)" onclick="javascript:location.href= '/material/<%= material._id %>'">
+            <div class="col-md-3 p-2" style="margin: 0px;">
+              <div class="course-image">
+                <img src="https://s3.ap-south-1.amazonaws.com/kitaabx.com/testImages/cn_1.jpg" alt="Course Image" style="margin: 0px;padding: 0px;width: 100%; max-height:160px; overflow: hidden;">
+              </div>
+            </div>
+            <div class="col-md-5 p-2">
+              <ul class="course-details">
+                <li><h4> by</h4></li>
+                <li><h6><strong>Under guidance of: </strong> <%= material.guidedBy %></h6></li>
+                <li><h6>By: <%= material.publisher.name.first %> <%= material.publisher.name.last %></h6></li>
+                <li><h6><strong>Branch: </strong><%= branchify[material.branch] %></h6></li>
+                <li class="row"><h6 class="col-lg-6"><strong>Year: </strong><%= yearify[material.year] %></h6><h6 class="col-lg-6"><strong><%= material.totalPages %> Pages</strong></h6></li>
+              </ul>
+            </div>
+            <div class="col-md-4 p-2">
+              <ul class="course-details">
+                <li><h4><u>Topics Covered:</u></h4></li>
+                <% for(let i=0; i<= 3; i++){ %>
+                  <% if(i<3){ %>
+                    <li><h6><%= material.contents[i].chapterName %></li></h6>                
+                <% }else{if((material.contents.length - 3) !== 0){ %>
+                  <li> +<%= material.contents.length-3 %> more</li>
+                <%  }}} %>
+              </ul>
             </div>
           </div>
-          <div class="col-md-5 p-2">
-            <ul class="course-details">
-              <li><h4> by</h4></li>
-              <li><h6><strong>Under guidance of: </strong> <%= material.guidedBy %></h6></li>
-              <li><h6>By: <%= material.publisher.name.first %> <%= material.publisher.name.last %></h6></li>
-              <li><h6><strong>Branch: </strong><%= branchify[material.branch] %></h6></li>
-              <li class="row"><h6 class="col-lg-6"><strong>Year: </strong><%= yearify[material.year] %></h6><h6 class="col-lg-6"><strong>74 Pages</strong></h6></li>
-            </ul>
-          </div>
-          <div class="col-md-4 p-2">
-            <ul class="course-details">
-              <li><h4><u>Topics Covered:</u></h4></li>
-              <% for(let i=0; i<= 3; i++){ %>
-                <% if(i<3){ %>
-                  <li><h6><%= material.contents[i].chapterName %></li></h6>                
-              <% }else{if((material.contents.length - 3) !== 0){ %>
-                <li> +<%= material.contents.length-3 %> more</li>
-              <%  }}} %>
-            </ul>
-          </div>
-        </div>
-        <% }) %>                
+          <% }) %>
+        <% } %>                
         <div id="differentMaterials">
 
         </div>

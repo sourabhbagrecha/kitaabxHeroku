@@ -164,6 +164,7 @@
   }
   #search-subject{
     height: 3rem; 
+    background-color: #e1e8f0;
     font-size: 2rem;
     width: 100%;
   }
@@ -199,10 +200,10 @@
     color: rgb(41, 18, 18);
   }
   .about__section--first{
-    background-image: linear-gradient(#6ed3cf, rgb(121, 179, 233));
+    background-image: linear-gradient(#d7f3f3, #d9d3f0);
   }
   .about__section--second{
-    background-image: linear-gradient(rgb(121, 179, 233), #6ed3cf);
+    background-image: linear-gradient(#d7f3f3, #d9d3f0);
   }
   .jumbotron{
     background-color: #e1e8f0;
@@ -216,6 +217,13 @@
     }
     #search-subject{
       font-size: 1rem;
+    }
+    .para__up{
+      position: static;
+    }
+    .about__para{
+      position: static;
+      font-size: 1.3rem;
     }
   } 
 </style>
@@ -253,7 +261,7 @@
 <%- include ../partials/header.ejs %>
 <% function romanize (num) {if (isNaN(num)) return NaN; var digits = String(+num).split(""),key = ["","C","CC","CCC","CD","D","DC","DCC","DCCC","CM","","X","XX","XXX","XL","L","LX","LXX","LXXX","XC","","I","II","III","IV","V","VI","VII","VIII","IX"],roman = "",i = 3;while (i--)roman = (key[+digits.pop() + (i * 10)] || "") + roman;return Array(+digits.join("") + 1).join("M") + roman;} %>
   <main>
-    <% branches = [{short: 'CS', title:'Computer Science', years: [1,2,3,4], imageUrl:"https://files.askiitians.com/cdn1/images/2014630-184237749-8880-cs.jpg"}, {short: 'IT', title:'Information Technology', years: [1,2,3], imageUrl:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1HC-s3viHNxHCaYlu_n0V6htUY4CC2bVpVacog4YtD_A05l08"}, {short: 'EXTC', title:'Electronics And TeleComm.', years: [1,2,3,4],imageUrl:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0ffnaVMLIHd4yGXhkwCrOQTW-aE81cvn_mfudjgCTez6jkc7vEA'}, {short: 'MECH', title:'Mechanical', years: [1,2,3,4], imageUrl:'https://www.mvjpolytechnic.edu.in/wp-content/uploads/2016/05/mvj-polytechnic-lab04.png'}, {short: 'MXTC', title:'Mechatronics', years: [1,2,3,4], imageUrl:"https://vub.hr/images/uploads/meh_logo.png"},{short: 'CIVIL', title:'Civil', years: [1,2,3,4], imageUrl:'https://image.spreadshirtmedia.com/image-server/v1/mp/compositions/T812A2MPA3140PT17X22Y0D1012883364FS4200/views/1,width=500,height=500,appearanceId=2,backgroundColor=000000,noPt=true,version=1543820067/civil-engineering-shirt-men-s-premium-t-shirt.jpg'} ]%>
+    <% branches = [{short: 'CS', title:'Computer Science', years: [2,3,4]}, {short: 'IT', title:'Information Technology', years: [2,3]}, {short: 'EXTC', title:'Electronics And TeleComm.', years: [2,3,4]}, {short: 'MECH', title:'Mechanical', years: [2,3,4]}, {short: 'MXTC', title:'Mechatronics', years: [2,3,4]},{short: 'CIVIL', title:'Civil', years: [2,3,4]} ]%>
     <% const yearify = ["0", "I", "II", "III", "IV"]; %>
     <% const branchify = {"CS" : "Computer Science","IT" : "Information Techology","MXTC" : "Mechatronics","EXTC" : "Electronics & Telecommunication","CIVIL" : "Civil","MECH" : "Mechanical"} %>
     <% const MONTH = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]; %>
@@ -272,12 +280,14 @@
             <div class="container intro__contents"> 
               <h1 class="intro__contents__heading mb-5">Welcome to KitaabX<span style="font-size: 1.7rem;">&nbsp&nbspβ</span></h1>
               <div class="row">
+                <div class="col-2"></div>
                 <div class="col-2 col-sm-1">
-                  <i class="fa fa-search" style="font-size: 3rem; color: white;"></i>
+                  <i class="fa fa-search" style="font-size: 3rem; color: #e1e8f0;"></i>
                 </div>
-                <div class="col-10 col-sm-11">
+                <div class="col-10 col-sm-6">
                   <input class="form-control" oninput="searchSubject(this);" id="search-subject" style="" type="text" placeholder="Subjects you wanna study today..."/>
                 </div>
+                <div class="col-2"></div>
               </div>
               <div class="row">
                 <div class="col-2 col-sm-1"></div>
@@ -306,9 +316,9 @@
               </div>
               <div class="col-lg-7 para__up">
                 <div class="about__para about__para--second">
-                    <p>But still, lecture notes work as a trump card while revising the subject or the night before the exam. A  solution to this issue is "Kitaabx".</p>
-                    <p>Kitaabx provides handwritten notes always at your fingertips.</p>
-                    <p>Just choose your subject and browse through all materials (notes) that are being uploaded by your peers and teachers, and start learning in a brand new way.</p>
+                  <p>But still, lecture notes work as a trump card while revising the subject or the night before the exam. A  solution to this issue is "Kitaabx".</p>
+                  <p>Kitaabx provides handwritten notes always at your fingertips.</p>
+                  <p>Just choose your subject and browse through all materials (notes) that are being uploaded by your peers and teachers, and start learning in a brand new way.</p>
                 </div>
               </div>
             </div>
@@ -364,7 +374,7 @@
                               <input type="button" class="year-modal-body btn" onclick="location.href='/subjects?year=<%= year %>&branch=<%= branch.short %>';" value="<%= romanize(year) %> year" />
                             <% }) %>
                           </div>
-                      </div>
+                        </div>
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -403,8 +413,8 @@
                   </article>
                   <article class="linestep linestep3" style="left: 68%; top: 44%;"> 
                     <span class="num"> 3</span>
-                    <p  class="bottom">
-                        Click "Create a new material".<br>Add basic details like:<br>subject-name, branch, year etc. And click "Next".
+                    <p class="bottom">
+                      Click "Create a new material".<br>Add basic details like:<br>subject-name, branch, year etc. And click "Next".
                     </p>
                   </article>
                   <article class="linestep linestep4" style="left: 32%; top: 44.5%;"> 
@@ -415,13 +425,13 @@
                   </article>
                   <article class="linestep linestep5" style="left: -1.5%; top: 68%;"> 
                     <span class="num"> 5</span>
-                    <p  class="right">
+                    <p class="right">
                       Meanwhile create syllabus for the material (notes). Add units and their corresponding page no.
                     </p>
                   </article>
                   <article class="linestep linestep6" style="left: 21%;  top: 93%;"> 
                     <span class="num"> 6</span>
-                    <p  class="bottom">
+                    <p class="bottom">
                       Click "Submit for verification".
                     </p>
                   </article>
@@ -433,7 +443,7 @@
                   </article>
                   <article class="linestep linestep8" style="left: 86%; top: 93%;"> 
                     <span class="num"> 8</span>
-                    <p  class="bottom">
+                    <p class="bottom">
                       You can manage all your materials in the publisher dashboard.<br/>Yay! You did it.
                     </p>
                   </article>

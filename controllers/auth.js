@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 
 exports.getSignup = (req, res, next) => {
 	res.render('auth/signup',{
-		title: 'Sanket | Signup',
+		title: 'Signup | KitaabX',
 		isLoggedIn : req.session.isLoggedIn || false, 
 		user: req.user,
 		errorMessage: req.flash('error'),
@@ -14,7 +14,7 @@ exports.getSignup = (req, res, next) => {
 
 exports.getLogin = (req, res, next) => {
 	res.render('auth/login',{
-		title: 'Sanket | Login', 
+		title: 'Login | KitaabX', 
 		isLoggedIn : req.session.isLoggedIn || false, 
 		user: req.user,
 		errorMessage: req.flash('error'),

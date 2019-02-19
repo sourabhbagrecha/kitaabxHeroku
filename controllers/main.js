@@ -7,7 +7,7 @@ exports.getHome = (req, res, next) => {
     .populate({'path': 'subject', 'field' : 'title shortForm'})
     .then(materials => {
       return res.render('main/home',{
-        title: 'Kitaabx| Welcome',
+        title: 'Welcome | KitaabX',
         isLoggedIn: req.session.isLoggedIn,
         user: req.user,
         errorMessage: req.flash('error'),
@@ -20,23 +20,30 @@ exports.getHome = (req, res, next) => {
 };
 
 exports.getSubjects = (req, res, next) => {
-  Subject.find({year: req.query.year , branch: req.query.branch })
-    .then(subjects => {
-      return res.render('main/subjects',{
-        title: '| KitaabX',
-        isLoggedIn: req.session.isLoggedIn,
-        user: req.user,
-        subjects: subjects,
-        query: req.query,
-        path: '/subjects'
-      })
+  const renderIt = (subjects) => {
+    return res.render('main/subjects',{
+      title: ' | KitaabX',
+      isLoggedIn: req.session.isLoggedIn,
+      user: req.user,
+      subjects: subjects,
+      query: req.query,
+      path: '/subjects'
     })
+  }
+  if(req.query.year === 1){
+    Subject.find({year: req.query.year})
+    .then(subjects => renderIt(subjects))
     .catch(err => console.log(err));
+  } else {
+    Subject.find({year: req.query.year , branch: req.query.branch })
+    .then(subjects => renderIt(subjects))
+    .catch(err => console.log(err));
+  }
 }
 
 exports.getSubject = (req, res, next) => {
   Subject.findById(req.params.id)
-    .populate({path:'materials', select:'publisher branch year guidedBy contents', populate:{path: 'publisher', select:'name'}})
+    .populate({path:'materials', select:'publisher branch year guidedBy contents totalPages', populate:{path: 'publisher', select:'name'}})
     .then(subject => {
       return res.render('main/subject', {
         title: subject.title + ' | KitaabX',

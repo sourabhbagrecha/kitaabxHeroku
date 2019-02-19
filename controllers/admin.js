@@ -7,7 +7,7 @@ exports.getDashboard = (req, res, next) => {
       return res.render('admin/dashboard',{
         user: req.user,
         isLoggedIn: req.session.isLoggedIn,
-        title: 'Publisher| Dashboard',
+        title: 'Publisher Dashboard | KitaabX',
         notVMaterials: notVMaterials,
         path: '/admin/dashboard'
       })
@@ -22,7 +22,7 @@ exports.getManageMaterial = (req, res, next) => {
       return res.render('admin/manage-material',{
         user: req.user,
         isLoggedIn: req.session.isLoggedIn,
-        title: 'Publisher| Dashboard',
+        title: 'Publisher Dashboard | KitaabX',
         material: material,
         path: '/admin/manage-material'        
       })
