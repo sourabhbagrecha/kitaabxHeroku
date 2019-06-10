@@ -78,7 +78,7 @@ exports.postSignup = (req, res, next) => {
 exports.postLogin = (req, res, next) => {
 	const email = req.body.email;
 	const password = req.body.password;
-	User.findOne({ email: email},'email password')
+	User.findOne({ email: email})
 		.then(user => {
 			if(!user){
 				console.log("No user with that email id exists!!");
