@@ -108,6 +108,7 @@ exports.postLogin = (req, res, next) => {
 					return res.redirect('/auth/login');
 				})
 			})
+			.catch(err => console.log(err));
 };
 
 exports.logout = (req, res, next) => {
