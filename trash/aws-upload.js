@@ -1,40 +1,11 @@
-// const multer = require('multer');
-// const multerS3 = require('multer-s3');
-// const aws = require('aws-sdk');
-
-// aws.config.update({
-//   secretAccessKey: 'qBZG5Z5+BxfaXOVIcLTOdO0jRUluTn9nnU5yK+NX',
-//   accessKeyId: 'AKIAJS34SC54Q73JFMCA',
-//   region: 'us-east-1'
-// });
-
-// const s3 = new aws.S3();
-
-// const upload = multer({
-//   storage: multerS3({
-//     s3: s3,
-//     bucket: 'sanket-files',
-//     acl: 'public-read',
-//     metadata: function (req, file, cb) {
-//       cb(null, {fieldName: file.fieldname});
-//     },
-//     key: function (req, file, cb) {
-//       cb(null, 'testing-files/'+req.params.id.toString()+'.pdf')
-//     }
-//   })
-// })
-
-// module.exports = upload;
-
-
 const AWS = require('aws-sdk');
 const fs = require('fs');
 const zlib = require('zlib'); // gzip compression
 
 
 
-const AWS_ACCESS_KEY = 'AKIAJS34SC54Q73JFMCA';
-const AWS_SECRET_KEY = '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';
+const AWS_ACCESS_KEY = process.env.AWS_ACCESS_KEY;
+const AWS_SECRET_KEY = process.env.AWS_SECRET_KEY;
 AWS.config.update({accessKeyId: AWS_ACCESS_KEY, secretAccessKey: AWS_SECRET_KEY});
 AWS.config.region = 'us-east-1';
 
